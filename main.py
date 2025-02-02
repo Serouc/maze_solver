@@ -41,13 +41,78 @@ class Line():
             self.point1.x, self.point1.y, self.point2.x, self.point2.y, fill=fill_color, width=2
             )
 
+class Cell():
+    def __init__(self, x1, y1, x2, y2, canvas):
+        self.has_left_wall = True
+        self.has_right_wall = True
+        self.has_top_wall = True
+        self.has_bottom_wall = True
+        self._x1 = x1
+        self._y1 = y1
+        self._x2 = x2
+        self._y2 = y2
+        self._win = canvas
+        self.center = Point(
+            self._x1 + (self._x2 - self._x1)/2, 
+            self._y1 + (self._y2 - self._y1)/2
+        )
+    
+    def draw(self, color):
+        bottom_left = Point(self._x1, self._y2)
+        top_left = Point(self._x1, self._y1)
+        bottom_right = Point(self._x2, self._y2)
+        top_right = Point(self._x2, self._y1)
+        if self.has_left_wall:
+            Line(top_left, bottom_left).draw(self._win, color)
+        if self.has_bottom_wall:
+            Line(bottom_left, bottom_right).draw(self._win, color)
+        if self.has_right_wall:
+            Line(bottom_right, top_right).draw(self._win, color)
+        if self.has_top_wall:
+            Line(top_left, top_right).draw(self._win, color)
+    
+    def draw_move(self, to_cell, undo=False):
+        color = "red"
+        if undo:
+            color = "gray"
+        Line(self.center, to_cell.center).draw(self._win, color)
+
+class Maze():
+    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win):
+        self._x1 = x1
+        self._y1 = y1
+        self._num_rows = num_rows
+        self._num_cols = num_cols
+        self._cell_size_x = cell_size_x
+        self._cell_size_y = cell_size_y
+        self._win = win
+
+    def _create_cells(self):
+        self._cells = []
+        x1 = self._x1
+        y1 = self._y1
+        for i in range(self._num_cols):
+            col = []
+            y2 = y1 + self._cell_size_y
+            for i in range(self._num_rows):
+                x2 = x1 + self._cell_size_x
+                col.append(Cell(x1, y1, x2, y2, self._win))
+                x1 = x2
+            self._cells.append(col)
+            x1 = self._x1
+            y1 = y2
 
 def main():
     win = Window(800, 600)
-    line = Line(Point(10, 20), Point(50, 100))
-    line2 = Line(Point(800, 0), Point(0, 600))
-    win.draw_line(line, "green")
-    win.draw_line(line2, "blue")
+    Cell(0, 0, 50, 50, win.canvas).draw("green")
+    Cell(50, 50, 100, 100, win.canvas).draw("green")
+    big_box = Cell(100, 100, 200, 200, win.canvas)
+    big_box.has_bottom_wall = False
+    big_box.draw("red")
+    big_box2 = Cell(200, 200, 300, 300, win.canvas)
+    big_box2.has_right_wall = False
+    big_box2.draw("purple")
+    big_box.draw_move(big_box2, undo = True)
     win.wait_for_close()
 
 main()
