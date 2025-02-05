@@ -1,7 +1,7 @@
 from graphics import *
 
 class Cell():
-    def __init__(self, canvas):
+    def __init__(self, canvas = None):
         self.has_left_wall = True
         self.has_right_wall = True
         self.has_top_wall = True

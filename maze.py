@@ -3,7 +3,7 @@ from cell import *
 import time
 
 class Maze():
-    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win):
+    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win = None):
         self._x1 = x1
         self._y1 = y1
         self._num_rows = num_rows
@@ -23,11 +23,12 @@ class Maze():
                 col.append(Cell(self._win))
             self._cells.append(col)
         
-        for col in self._cells:
-            i = self._cells.index(col)
-            for cell in col:
-                j = col.index(cell)
-                self._draw_cells(i, j)
+        if self._win:
+            for col in self._cells:
+                i = self._cells.index(col)
+                for cell in col:
+                    j = col.index(cell)
+                    self._draw_cells(i, j)
 
         
     def _draw_cells(self, i, j):
