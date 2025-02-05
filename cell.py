@@ -3,13 +3,18 @@ from graphics import *
 class Cell():
     def __init__(self, canvas = None):
         self.has_left_wall = True
+        self.id_left = None
         self.has_right_wall = True
+        self.id_right = None
         self.has_top_wall = True
+        self.id_top = None
         self.has_bottom_wall = True
+        self.id_bottom = None
         self._x1 = None
         self._y1 = None
         self._x2 = None
         self._y2 = None
+        
         self._win = canvas
 
     def draw(self, x1, y1, x2, y2):
@@ -23,16 +28,16 @@ class Cell():
         top_right = Point(self._x2, self._y1)
         if self.has_left_wall:
             line = Line(top_left, bottom_left)
-            self._win.draw_line(line)
+            self.id_left = self._win.draw_line(line)
         if self.has_bottom_wall:
             line = Line(bottom_left, bottom_right)
-            self._win.draw_line(line)
+            self.id_bottom = self._win.draw_line(line)
         if self.has_right_wall:
             line = Line(bottom_right, top_right)
-            self._win.draw_line(line)
+            self.id_right = self._win.draw_line(line)
         if self.has_top_wall:
             line = Line(top_left, top_right)
-            self._win.draw_line(line)
+            self.id_top = self._win.draw_line(line)
 
     def draw_move(self, to_cell, undo=False):
         start_center = Point(
