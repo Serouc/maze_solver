@@ -6,7 +6,6 @@ class Window:
         self.__root.title("aMAZing")
         self.__canvas = Canvas(self.__root, width = width, height = height)
         self.__canvas.pack()
-        self.__running = False
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
 
     
@@ -15,19 +14,19 @@ class Window:
         self.__root.update()
     
     def wait_for_close(self):
-        self.__running = True
-        while self.__running == True:
-            self.redraw()
+        self.__root.mainloop()
 
     def close(self):
-        self.__running = False
+        self.__canvas.quit()
     
     def draw_line(self, line, fill_color="black"):
         return line.draw(self.__canvas, fill_color)
     
     def delete_line(self, line_id):
         self.__canvas.delete(line_id)
-
+    
+    def delay(self, delay_ms, callback):
+        self.__root.after(delay_ms, callback)
 
 class Point():
     def __init__(self, x, y):

@@ -22,16 +22,20 @@ class Maze():
             for i in range(self._num_rows):
                 col.append(Cell(self._win))
             self._cells.append(col)
-        
-        if self._win:
-            for col in self._cells:
-                i = self._cells.index(col)
-                for cell in col:
-                    j = col.index(cell)
-                    self._draw_cell(i, j)
-            self._break_entrance_and_exit()
 
+        if self._win:
+            self._draw_next_cell()
+        self._break_entrance_and_exit()
+
+    def _draw_next_cell(self, i=0, j=0):
+        if i < len(self._cells):
+            self._draw_cell(i, j)
+            if j + 1 < len(self._cells[i]):
+                self._win.delay(50, lambda: self._draw_next_cell(i, j+1))
+            else:
+                self._win.delay(50, lambda: self._draw_next_cell(i+1, 0))
         
+
     def _draw_cell(self, i, j):
         x1 = self._x1 + (i * self._cell_size_x)
         y1 = self._y1 + (j * self._cell_size_y)
@@ -39,18 +43,14 @@ class Maze():
         y2 = y1 + self._cell_size_y
         cell = self._cells[i][j]
         cell.draw(x1, y1, x2, y2)
-        self._animate()
-    
-    def _animate(self):
-        self._win.redraw()
-        time.sleep(0.05)
 
     def _break_entrance_and_exit(self):
         if not self._cells:
             return
-        # break entrance
+
         self._cells[0][0].has_top_wall = False
-        self._win.delete_line(self._cells[0][0].id_top)
-        # break exit
         self._cells[-1][-1].has_bottom_wall = False
-        self._win.delete_line(self._cells[-1][-1].id_bottom)
+        
+        if self._win:
+            self._win.delete_line(self._cells[0][0].id_top)
+            self._win.delete_line(self._cells[-1][-1].id_bottom)
