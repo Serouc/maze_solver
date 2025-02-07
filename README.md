@@ -1,4 +1,4 @@
-A simple maze generator/solver using python/tkinter
+A simple maze generator/solver for boot.dev project using python/tkinter
 
 python input for screen resolution(width, height) and maze size (columns, rows)
 
