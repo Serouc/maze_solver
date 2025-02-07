@@ -1,4 +1,4 @@
-from tkinter import Tk, BOTH, Canvas
+from tkinter import Tk, BOTH, Canvas, Button
 
 class Window:
     def __init__(self, width, height):
@@ -7,8 +7,11 @@ class Window:
         self.__canvas = Canvas(self.__root, width = width, height = height)
         self.__canvas.pack()
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
+        self._draw_button = Button(self.__root, text="Draw Maze", state="normal")
+        self._solve_button = Button(self.__root, text = "Solve Maze", state = "disabled")
+        self._draw_button.pack()
+        self._solve_button.pack()
 
-    
     def redraw(self):
         self.__root.update_idletasks()
         self.__root.update()
@@ -27,7 +30,16 @@ class Window:
     
     def delay(self, delay_ms, callback):
         self.__root.after(delay_ms, callback)
-
+    
+    def set_draw_command(self, command):
+        self._draw_button.config(command=command)
+    
+    def set_solve_command(self, command):
+        self._solve_button.config(command=command)
+    
+    def enable_solve_button(self):
+        self._solve_button.config(state="normal")
+    
 class Point():
     def __init__(self, x, y):
         self.x = x
