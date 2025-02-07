@@ -5,7 +5,7 @@ import time
 
 
 class Maze():
-    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win = None, seed = None):
+    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win = None, seed = None, speed_mod = 1):
         self._x1 = x1
         self._y1 = y1
         self._num_rows = num_rows
@@ -13,6 +13,7 @@ class Maze():
         self._cell_size_x = cell_size_x
         self._cell_size_y = cell_size_y
         self._win = win
+        self._speed_mod = speed_mod
         if seed:
             random.seed(seed)
         self._create_cells()
@@ -42,10 +43,10 @@ class Maze():
             self._draw_cell(i, j)
             if j + 1 < len(self._cells[i]):
                 #self._draw_next_cell(i, j+1)
-                self._win.delay(25, lambda: self._draw_next_cell(i, j+1))
+                self._win.delay(int(25/self._speed_mod), lambda: self._draw_next_cell(i, j+1))
             else:
                 if i + 1 < len(self._cells):
-                    self._win.delay(25, lambda: self._draw_next_cell(i+1, 0))
+                    self._win.delay(int(25/self._speed_mod), lambda: self._draw_next_cell(i+1, 0))
                 else:
                     # Enable the solve button when maze is fully drawn
                     self._win._solve_button.config(state="normal")
@@ -171,7 +172,7 @@ class Maze():
             self._cells[next_cell[0]][next_cell[1]].visited = True
             self._stack.append(next_cell)
 
-        return self._win.delay(100, self._solve_step)
+        return self._win.delay(int(100/self._speed_mod), self._solve_step)
     
         '''
     def _solve_r(self, i, j):
