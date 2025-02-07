@@ -124,12 +124,6 @@ class Maze():
         for col in self._cells:
             for cell in col:
                 cell.visited = False
-
-    def _animate(self):
-        if self._win is None:
-            return
-        self._win.redraw()
-        time.sleep(0.05)
     
     def solve(self):
         self._reset_cells_visited()
@@ -166,7 +160,13 @@ class Maze():
                 prev = self._stack[-1]
                 self._cells[prev[0]][prev[1]].draw_move(self._cells[current[0]][current[1]], undo=True)
         else:
-            next_cell = random.choice(to_visit)
+            weights = []
+            for move in to_visit:
+                x, y = move
+                distance_to_goal = abs(x - (self._num_cols-1)) + abs(y - (self._num_rows-1))
+                weight = 1.0 / (distance_to_goal + 1)
+                weights.append(weight)
+            next_cell = random.choices(to_visit, weights=weights, k=1)[0]
             self._cells[i][j].draw_move(self._cells[next_cell[0]][next_cell[1]])
             self._cells[next_cell[0]][next_cell[1]].visited = True
             self._stack.append(next_cell)
