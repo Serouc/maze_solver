@@ -3,7 +3,7 @@ from cell import *
 from maze import *
 
 def main():
-    sc_width = int(input("Enter sc_width: "))
+    sc_width = int(input("Enter screen width: "))
     sc_height = int(input("Enter screen height: "))
     cols = int(input("Enter number of columns: "))
     rows = int(input("Enter number of rows: "))
