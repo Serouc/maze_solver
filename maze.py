@@ -42,10 +42,10 @@ class Maze():
         if i < len(self._cells):
             self._draw_cell(i, j)
             if j + 1 < len(self._cells[i]):
-                self._win.delay(int(25/self._speed_mod), lambda: self._draw_next_cell(i, j+1))
+                self._win.delay(int(750/self._speed_mod), lambda: self._draw_next_cell(i, j+1))
             else:
                 if i + 1 < len(self._cells):
-                    self._win.delay(int(25/self._speed_mod), lambda: self._draw_next_cell(i+1, 0))
+                    self._win.delay(int(750/self._speed_mod), lambda: self._draw_next_cell(i+1, 0))
                 else:
                     # Enable the solve button when maze is fully drawn
                     self._win._solve_button.config(state="normal")
@@ -171,4 +171,4 @@ class Maze():
             self._cells[next_cell[0]][next_cell[1]].visited = True
             self._stack.append(next_cell)
 
-        return self._win.delay(int(100/self._speed_mod), self._solve_step)
+        return self._win.delay(int(1500/self._speed_mod), self._solve_step)
